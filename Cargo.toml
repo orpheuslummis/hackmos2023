@@ -2,6 +2,7 @@
 name = "app"
 version = "0.0.1"
 authors = [
+  "Orpheus Lummis <o@orpheuslummis.info>",
   "CyberHoward <cyberhoward@protonmail.com>",
   "Adair <adair@abstract.money>",
   "Abstract Money <contact@abstract.money>",
