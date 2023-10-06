@@ -6,40 +6,65 @@ use app::{
     *,
 };
 // Use prelude to get all the necessary imports
-use cw_orch::{anyhow, deploy::Deploy, prelude::*};
+use cw_orch::{anyhow, deploy::Deploy, prelude::*, daemon::{NetworkInfo, ChainInfo, ChainKind}, tokio::runtime::Runtime};
 
-use cosmwasm_std::Addr;
+// use cosmwasm_std::Addr;
 
 // consts for testing
 const ADMIN: &str = "admin";
+const LOCAL_MNEMONIC: &str = "island position immense mom cross enemy grab little deputy tray hungry detect state helmet tomorrow trap expect admit inhale present vault reveal scene atom";
 
-// HACKMOS this is ow-orchestrator
-// HACKMOS daemon connect (pass the okp4 chain to the daemon)
+pub const OKP4_NETWORK: NetworkInfo = NetworkInfo {
+    id: "okp4-localnet",
+    pub_address_prefix: "okp4",
+    coin_type: 118u32, // TBD
+};
+
+pub const LOCAL_OKP4: ChainInfo = ChainInfo {
+    kind: ChainKind::Local,
+    chain_id: "okp4-localnet",
+    gas_denom: "uknow",
+    gas_price: 0.0,
+    grpc_urls: &["http://localhost:9090"],
+    network_info: OKP4_NETWORK,
+    lcd_url: None,
+    fcd_url: None,
+};
 
 /// Set up the test environment with the contract installed
-fn setup() -> anyhow::Result<(AbstractAccount<Mock>, Abstract<Mock>, AppInterface<Mock>)> {
+fn setup() -> anyhow::Result<(AbstractAccount<Daemon>, Abstract<Daemon>, AppInterface<Daemon>)> {
     // Create a sender
-    let sender = Addr::unchecked(ADMIN);
-    // Create the mock
-    let mock = Mock::new(&sender);
+    // let sender = Addr::unchecked(ADMIN);
+
+    let runtime = Runtime::new()?;
+    let daemon = Daemon::builder()
+        .chain(LOCAL_OKP4)
+        .mnemonic(LOCAL_MNEMONIC)
+        .handle(runtime.handle())
+        .build()
+        .unwrap();
 
 
     // Construct the counter interface
-    let app = AppInterface::new(APP_ID, mock.clone());
+    // let app = AppInterface::new(APP_ID, mock.clone());
+    let app = AppInterface::new(APP_ID, daemon.clone());
 
     // Deploy Abstract to the mock
-    let abstr_deployment = Abstract::deploy_on(mock, sender.to_string())?;
+    // let abstr_deployment = Abstract::deploy_on(mock, sender.to_string())?;
+    let abstract_deployment = Abstract::deploy_on(daemon.clone(), daemon.sender().to_string())?;
+    // let abstract_deployment = Abstract::load_from(daemon.clone())?;
+
 
     // Create a new account to install the app onto
     let account =
-        abstr_deployment
+    abstract_deployment
             .account_factory
             .create_default_account(GovernanceDetails::Monarchy {
                 monarch: ADMIN.to_string(),
             })?;
 
     // claim the namespace so app can be deployed
-    abstr_deployment
+    abstract_deployment
         .version_control
         .claim_namespace(AccountId::local(1), "my-namespace".to_string())?;
 
@@ -47,7 +72,7 @@ fn setup() -> anyhow::Result<(AbstractAccount<Mock>, Abstract<Mock>, AppInterfac
 
     account.install_app(app.clone(), &AppInstantiateMsg {}, None)?;
 
-    Ok((account, abstr_deployment, app))
+    Ok((account, abstract_deployment, app))
 }
 
 #[test]
