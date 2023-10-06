@@ -26,3 +26,7 @@ Deploy smart contract
 RUST_LOG=info cargo run --example test-local-okp4
 ```
 
+Test only integration
+```
+cargo test --package app --test integration
+```
