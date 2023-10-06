@@ -7,7 +7,9 @@ abstract_app::app_msg_types!(App, AppExecuteMsg, AppQueryMsg);
 
 /// App instantiate message
 #[cosmwasm_schema::cw_serde]
-pub struct AppInstantiateMsg {}
+pub struct AppInstantiateMsg {
+    pub count: i32,
+}
 
 /// App execute messages
 #[cosmwasm_schema::cw_serde]
@@ -15,6 +17,8 @@ pub struct AppInstantiateMsg {}
 #[cfg_attr(feature = "interface", impl_into(ExecuteMsg))]
 pub enum AppExecuteMsg {
     UpdateConfig {},
+    Increment {},
+    Reset { count: i32 },
 }
 
 /// App query messages

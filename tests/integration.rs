@@ -70,7 +70,7 @@ fn setup() -> anyhow::Result<(AbstractAccount<Daemon>, Abstract<Daemon>, AppInte
 
     app.deploy(APP_VERSION.parse()?)?;
 
-    account.install_app(app.clone(), &AppInstantiateMsg {}, None)?;
+    account.install_app(app.clone(), &AppInstantiateMsg { count: 0 }, None)?;
 
     Ok((account, abstract_deployment, app))
 }

@@ -82,7 +82,7 @@ fn main() -> anyhow::Result<()> {
     app.deploy(version)?;
 
     // Install app
-    account.install_app(app, &AppInstantiateMsg {}, None)?;
+    account.install_app(app, &AppInstantiateMsg { count: 2 }, None)?;
 
     // Deploy cw locally
     // let cw20 = Cw20Base::new("cw-plus:cw20", daemon.clone());
