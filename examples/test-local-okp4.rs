@@ -16,13 +16,14 @@ use app::{
 };
 use cw_orch::{
     anyhow,
+    daemon::{ChainInfo, ChainKind, NetworkInfo},
     deploy::Deploy,
     prelude::{Daemon, TxHandler},
-    tokio::runtime::Runtime, daemon::{ChainInfo, ChainKind, NetworkInfo},
+    tokio::runtime::Runtime,
 };
+// use cw_plus_interface::cw20_base::Cw20Base;
 use semver::Version;
 use speculoos::{assert_that, prelude::BooleanAssertions};
-use cw_plus_interface::cw4_group::Cw4Group;
 
 const LOCAL_MNEMONIC: &str = "island position immense mom cross enemy grab little deputy tray hungry detect state helmet tomorrow trap expect admit inhale present vault reveal scene atom";
 
@@ -71,7 +72,7 @@ fn main() -> anyhow::Result<()> {
             monarch: daemon.sender().into_string(),
         },
     )?;
-    
+
     // Claim namespace
     abstract_deployment
         .version_control
@@ -82,6 +83,10 @@ fn main() -> anyhow::Result<()> {
 
     // Install app
     account.install_app(app, &AppInstantiateMsg {}, None)?;
+
+    // Deploy cw locally
+    // let cw20 = Cw20Base::new("cw-plus:cw20", daemon.clone());
+    // cw20
 
     assert_that!(account.manager.is_module_installed(APP_ID).unwrap()).is_true();
     Ok(())

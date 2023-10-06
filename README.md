@@ -13,6 +13,11 @@ make install
 
 Run local node
 ```
+just wasm
+```
+
+Run local node
+```
 make okp4-local
 ```
 
