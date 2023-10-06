@@ -8,3 +8,16 @@ cd okp4d
 make build
 make install
 ```
+
+# Instructions
+
+Run local node
+```
+make okp4-local
+```
+
+Deploy smart contract
+```
+RUST_LOG=info cargo run --example test-local-okp4
+```
+
