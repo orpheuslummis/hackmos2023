@@ -54,14 +54,13 @@ fn setup() -> anyhow::Result<(AbstractAccount<Daemon>, Abstract<Daemon>, AppInte
     let abstract_deployment = Abstract::deploy_on(daemon.clone(), daemon.sender().to_string())?;
     // let abstract_deployment = Abstract::load_from(daemon.clone())?;
 
-
-    // Create a new account to install the app onto
-    let account =
-    abstract_deployment
-            .account_factory
-            .create_default_account(GovernanceDetails::Monarchy {
-                monarch: ADMIN.to_string(),
-            })?;
+    let account = abstract_deployment.
+    account_factory.
+    create_default_account(
+        GovernanceDetails::Monarchy {
+            monarch: daemon.sender().into_string(),
+        },
+    )?;
 
     // claim the namespace so app can be deployed
     abstract_deployment
@@ -82,5 +81,10 @@ fn successful_install() -> anyhow::Result<()> {
 
     let config = app.config()?;
     assert_eq!(config, ConfigResponse {});
+    Ok(())
+}
+
+#[test]
+fn do_some_dao_stuff() -> anyhow::Result<()> {
     Ok(())
 }
