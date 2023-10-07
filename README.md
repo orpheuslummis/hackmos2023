@@ -63,6 +63,7 @@ We learned a lot :)
 
 ## Links
 - Presentation: https://docs.google.com/presentation/d/1FEw94tVDXwXWf78L0NBdAoB4bLDL-NHJdhjUz1i5xwI
+- small Prolog interpreter in Prolog on OKP4 https://github.com/orpheuslummis/meta-lawstone
 - Fork of OKP4 smart contracts: https://github.com/orpheuslummis/okp4-contracts/tree/dev
 - Fork of Abstract SDK: https://github.com/orpheuslummis/abstract
 - Branches with work on setting up and CosmWasm
