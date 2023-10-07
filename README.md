@@ -59,3 +59,12 @@ We should have targeted a smaller project given our lack of experience in the ec
 We were surprised at the hackathon duration. We got the info that it was going to be shorter than what we expected a few hours before the submission time.
 
 We learned a lot :)
+
+
+## References
+- https://github.com/orpheuslummis/hackmos2023/tree/orpheus-dev
+- https://github.com/orpheuslummis/hackmos2023/tree/huiqi-dev
+- https://github.com/orpheuslummis/hackmos2023/tree/test4
+- https://github.com/orpheuslummis/hackmos2023/tree/aeither/test3
+- https://github.com/orpheuslummis/abstract
+- https://github.com/orpheuslummis/okp4-contracts/tree/dev
