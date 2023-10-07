@@ -12,3 +12,5 @@ state.json
 typescript/node_modules
 
 /chainconfig
+
+/artifacts/*

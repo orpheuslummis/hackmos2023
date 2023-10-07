@@ -23,7 +23,7 @@ use cw_orch::{
 use semver::Version;
 use speculoos::{assert_that, prelude::BooleanAssertions};
 
-const LOCAL_MNEMONIC: &str = "clip hire initial neck maid actor venue client foam budget lock catalog sweet steak waste crater broccoli pipe steak sister coyote moment obvious choose";
+const LOCAL_MNEMONIC: &str = "island position immense mom cross enemy grab little deputy tray hungry detect state helmet tomorrow trap expect admit inhale present vault reveal scene atom";
 
 fn main() -> anyhow::Result<()> {
     dotenv::dotenv().ok();
@@ -38,6 +38,7 @@ fn main() -> anyhow::Result<()> {
         .handle(runtime.handle())
         .build()
         .unwrap();
+
     // Deploy abstract locally
     let abstract_deployment = Abstract::deploy_on(daemon.clone(), daemon.sender().to_string())?;
 

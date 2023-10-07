@@ -5,14 +5,8 @@ use app::{
     msg::{AppInstantiateMsg, ConfigResponse},
     *,
 };
-// Use prelude to get all the necessary imports
 use cw_orch::{anyhow, deploy::Deploy, prelude::*, daemon::{NetworkInfo, ChainInfo, ChainKind}, tokio::runtime::Runtime};
 
-// use cosmwasm_std::Addr;
-
-// consts for testing
-const ADMIN: &str = "admin";
-const LOCAL_MNEMONIC: &str = "island position immense mom cross enemy grab little deputy tray hungry detect state helmet tomorrow trap expect admit inhale present vault reveal scene atom";
 
 pub const OKP4_NETWORK: NetworkInfo = NetworkInfo {
     id: "okp4-localnet",
@@ -31,26 +25,53 @@ pub const LOCAL_OKP4: ChainInfo = ChainInfo {
     fcd_url: None,
 };
 
+fn setup_okp4_contracts() -> anyhow::Result<()> { // TBD
+    // deploy contracts and return them??
+    env_logger::init();
+    dotenv::dotenv().unwrap();
+
+    let sender = Addr::unchecked("sender");
+    
+    let rt = Runtime::new().unwrap();
+    let network = LOCAL_OKP4;
+    let chain = DaemonBuilder::default()
+        .handle(rt.handle())
+        .chain(network)
+        .build().unwrap();
+
+        let cw20 = Cw20Base::new("cw-plus:cw20", chain.clone());
+
+        cw20.upload()?;
+        cw20.instantiate(&InstantiateMsg{
+            name: "Test-cw20".to_string(),
+            symbol: "ABT".to_string(),
+            decimals: 6,
+            initial_balances: vec![],
+            mint: Some(MinterResponse{
+                minter: chain.sender().to_string(),
+                cap: None
+            }),
+            marketing: None
+        }, None, None)?;
+
+    Ok(())
+}
+
 /// Set up the test environment with the contract installed
 fn setup() -> anyhow::Result<(AbstractAccount<Daemon>, Abstract<Daemon>, AppInterface<Daemon>)> {
-    // Create a sender
-    // let sender = Addr::unchecked(ADMIN);
+    dotenv::dotenv().ok();
+    let local_mnemonic = std::env::var("LOCAL_MNEMONIC").expect("LOCAL_MNEMONIC must be set");
 
     let runtime = Runtime::new()?;
     let daemon = Daemon::builder()
         .chain(LOCAL_OKP4)
-        .mnemonic(LOCAL_MNEMONIC)
+        .mnemonic(local_mnemonic)
         .handle(runtime.handle())
         .build()
         .unwrap();
 
-
-    // Construct the counter interface
-    // let app = AppInterface::new(APP_ID, mock.clone());
     let app = AppInterface::new(APP_ID, daemon.clone());
 
-    // Deploy Abstract to the mock
-    // let abstr_deployment = Abstract::deploy_on(mock, sender.to_string())?;
     let abstract_deployment = Abstract::deploy_on(daemon.clone(), daemon.sender().to_string())?;
     // let abstract_deployment = Abstract::load_from(daemon.clone())?;
 
@@ -62,7 +83,6 @@ fn setup() -> anyhow::Result<(AbstractAccount<Daemon>, Abstract<Daemon>, AppInte
         },
     )?;
 
-    // claim the namespace so app can be deployed
     abstract_deployment
         .version_control
         .claim_namespace(AccountId::local(1), "my-namespace".to_string())?;
@@ -76,7 +96,6 @@ fn setup() -> anyhow::Result<(AbstractAccount<Daemon>, Abstract<Daemon>, AppInte
 
 #[test]
 fn successful_install() -> anyhow::Result<()> {
-    // Set up the environment and contract
     let (_account, _abstr, app) = setup()?;
 
     let config = app.config()?;

@@ -59,8 +59,8 @@ fn main() -> anyhow::Result<()> {
     // detect if they'ee already loaded somehow
 
     // Deploy abstract locally
-    // let abstract_deployment = Abstract::deploy_on(daemon.clone(), daemon.sender().to_string())?;
-    let abstract_deployment = Abstract::load_from(daemon.clone())?;
+    let abstract_deployment = Abstract::deploy_on(daemon.clone(), daemon.sender().to_string())?;
+    // let abstract_deployment = Abstract::load_from(daemon.clone())?;
 
     let app = AppInterface::new(APP_ID, daemon.clone());
 
