@@ -65,8 +65,3 @@ We learned a lot :)
 - Presentation: https://docs.google.com/presentation/d/1FEw94tVDXwXWf78L0NBdAoB4bLDL-NHJdhjUz1i5xwI
 - Fork of OKP4 smart contracts: https://github.com/orpheuslummis/okp4-contracts/tree/dev
 - Fork of Abstract SDK: https://github.com/orpheuslummis/abstract
-
-## TBD
-- https://github.com/orpheuslummis/hackmos2023/tree/orpheus-dev
-- https://github.com/orpheuslummis/hackmos2023/tree/test4
-- https://github.com/orpheuslummis/hackmos2023/tree/aeither/test3
